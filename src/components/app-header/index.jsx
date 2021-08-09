@@ -18,7 +18,8 @@ const showSelectList = (item, index) => {
             <i className="sprite_01 icon"></i>
         </NavLink>
     } else {
-        return <a href={item.link}>{item.title}</a>
+        return <a href={item.link} target="_blank"
+            rel="noopener noreferrer">{item.title}</a>
     }
 }
 

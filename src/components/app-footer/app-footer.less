@@ -1,0 +1,117 @@
+.app-footer {
+  background-color: #f2f2f2;
+  height: 172px;
+  border-top: 1px solid #d3d3d3;
+  /* 内容区 */
+  .content {
+    height: 115px;
+    // background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* 左侧链接 */
+    .left {
+      .left-top {
+        display: flex;
+        .link-item {
+          a {
+            color: #999;
+          }
+          /* 竖线分割 */
+          span {
+            color: #999;
+            margin: 0 10px;
+          }
+        }
+      }
+      .left-bottom {
+        color: #666;
+        p {
+          margin: 5px 0;
+        }
+        span {
+          margin: 0 0;
+        }
+        .policeLogo {
+          width: 14px;
+          height: 14px;
+          display: inline-block;
+          background: url("https://s2.music.126.net/style/web2/img/3rd/police.png?dc9cdb88d75c802d34e7e5b29642a815")
+            no-repeat;
+          background-size: cover;
+          margin-right: 2px;
+          vertical-align: -2px;
+        }
+      }
+    }
+    /* 右侧图片链接 */
+    .right {
+      .right-ul {
+        display: flex;
+
+        /* 设置图片和文字图片上下结构 */
+        .right-li {
+          display: flex;
+          flex-direction: column;
+          margin-left: 30px;
+        }
+        /* 单个图片 设置背景 */
+        .item {
+          background: url("~@assets/img/sprite_footer_01.png") no-repeat;
+          display: inline-block;
+          width: 50px;
+          height: 45px;
+          background-size: 104px 545px;
+        }
+        /* 设置每个图片背景的不同偏移 */
+        & :nth-child(1) .item {
+          background-position: -60px -451px;
+        }
+
+        & :nth-child(2) .item {
+          background-position: -60px -100px;
+        }
+
+        & :nth-child(3) .item {
+          background-position: 0 0;
+        }
+
+        & :nth-child(4) .item {
+          background-position: -60px -50px;
+        }
+
+        & :nth-child(5) .item {
+          background-position: 0 -100px;
+        }
+        /* 每个图片底部的文字 */
+        .title {
+          background: url("~@assets/img/sprite_footer_02.png") no-repeat;
+          display: inline-block;
+          text-align: center;
+          background-size: 170px 153px;
+          width: 52px;
+          height: 20px;
+        }
+        /* 设置每个的文字图片偏移不同 */
+        & :nth-child(1) .title {
+          width: 72px;
+          background-position: -1px -119px;
+          transform: translateX(-10%);
+        }
+        & :nth-child(2) .title {
+          background-position: -5px -100px;
+        }
+        & :nth-child(3) .title {
+          /* background-position: 0px,0px; */
+        }
+        & :nth-child(4) .title {
+          background-position: -15px -60px;
+          transform: translateX(20%);
+        }
+        & :nth-child(5) .title {
+          background-position: -5px -80px;
+        }
+      }
+    }
+  }
+}
