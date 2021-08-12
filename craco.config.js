@@ -18,10 +18,42 @@ module.exports = {
             '@store': pathResolve('src/store'),
             '@utils': pathResolve('src/utils'),
             '@router': pathResolve('src/router'),
-            '@assets': pathResolve('src/assets')
+            '@assets': pathResolve('src/assets'),
+            '@network': pathResolve('src/network')
         }
     },
     plugins: [
-        { plugin: CracoLessPlugin }
+        //less插件
+        {
+            plugin: CracoLessPlugin,
+            options: {
+                modifyLessRule(lessRule, context) {
+                    return {
+                        ...lessRule,
+                        ...{
+                            test: /\.module\.less$/,
+                            exclude: undefined,
+                        },
+                    };
+                },
+            }
+
+        },
+        // less module
+        {
+            plugin: CracoLessPlugin,
+            options: {
+                modifyLessRule(lessRule, context) {
+                    return {
+                        ...lessRule,
+                        ...{
+                            test: /\.less$/,
+                            exclude: /\.module\.less$/,
+                        },
+                    };
+                },
+            }
+
+        },
     ]
 }

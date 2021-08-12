@@ -4,7 +4,7 @@
 export const headerLinks = [
   {
     title: "发现音乐",
-    link: "/",
+    link: "/discover",
   },
   {
     title: "我的音乐",
@@ -52,6 +52,10 @@ export const footerLinks = [
     title: "意见反馈",
     link: "#",
   },
+  {
+    title: "广告合作",
+    link: "yyyx@list.nie.netease.com"
+  }
 ];
 
 /**

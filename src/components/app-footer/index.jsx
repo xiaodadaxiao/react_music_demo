@@ -14,11 +14,11 @@ export default memo(function AppFooter() {
                 <div className="left">
                     <div className="left-top">
                         {
-                            footerLinks.map((item, index) => {
+                            footerLinks.map((item, index, arr) => {
                                 return (
                                     <div className="link-item" key={item.link}>
                                         <a href={item.link} key={item.title}>{item.title}</a>
-                                        <span>{index === 4 ? "" : "|"}</span>
+                                        <span>{index === arr.length - 1 ? "" : "|"}</span>
                                     </div>)
 
                             })
@@ -26,14 +26,14 @@ export default memo(function AppFooter() {
                     </div>
                     <div className="left-bottom">
                         <p>
-                            <span>网易公司版权所有©1997-2020</span>
+                            <span>网易公司版权所有©1997-2021</span>
                             <span>杭州乐读科技有限公司运营：</span>
                             <a
                                 href="https://p1.music.126.net/Mos9LTpl6kYt6YTutA6gjg==/109951164248627501.png"
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
-                                浙网文[2018]3506-263号
+                                浙网文[2021]1186-054号
                             </a>
                         </p>
                         <p>
