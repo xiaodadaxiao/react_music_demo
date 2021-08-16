@@ -1,7 +1,7 @@
 /* 导入常量 */
 import * as actionTypes from './contants'
 //导入网络请求函数
-import { getTopBanners } from '@network/recommend';
+import { getTopBanners, getHotRecommend, getNewAlbum } from '@network/recommend';
 
 //异步action 请求推荐页面的轮播图数据
 export const getTopBannersAction = () => {
@@ -23,4 +23,37 @@ export const changeTopBannersAction = (res) => {
     }
 }
 
+//请求 热门推荐 的数据（异步action）
+export const getHotRecommendAction = (limit) => {
+    return (dispatch) => {
+        //网络请求
+        getHotRecommend(limit).then(res => {
+            //修改数据
+            dispatch(changeHotRecommendAction(res))
+        })
+    }
+}
+//修改 热门推荐 的数据
+export const changeHotRecommendAction = (res) => {
+    return {
+        type: actionTypes.CHANGE_HOT_RECOMMEND,
+        hotRecommends: res.result
+    }
+}
+
+//请求 新碟上架 数据
+export const getNewAlbumAction = (limit) => {
+    return (dispatch) => {
+        getNewAlbum(limit).then(res => {
+            dispatch(changeNewAlbumAction(res));
+        })
+    }
+}
+//修改 新碟上架 数据
+export const changeNewAlbumAction = (res) => {
+    return {
+        type: actionTypes.CHANGE_NEW_ALBUM,
+        newAlbums: res.albums
+    }
+}
 
