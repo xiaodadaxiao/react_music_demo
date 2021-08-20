@@ -1,7 +1,7 @@
 /* 导入常量 */
 import * as actionTypes from './contants'
 //导入网络请求函数
-import { getTopBanners, getHotRecommend, getNewAlbum } from '@network/recommend';
+import { getTopBanners, getHotRecommend, getNewAlbum ,getTopList } from '@network/recommend';
 
 //异步action 请求推荐页面的轮播图数据
 export const getTopBannersAction = () => {
@@ -57,3 +57,41 @@ export const changeNewAlbumAction = (res) => {
     }
 }
 
+//请求 排行榜（3种idx） 数据
+export const getTopListAction =(idx) =>{
+    return (dispatch) =>{
+        getTopList(idx).then(res=>{
+            console.log(res);
+            switch(idx){
+                case 0:
+                    dispatch(changeUpRankingAction(res));
+                    break;
+                case 2:
+                    dispatch(changeNewRankingAction(res));
+                    break;
+                case 3:
+                    dispatch(changeOriginRankingAction(res));
+                    break;
+                default:
+                    break;
+            }
+        })
+    }
+}
+
+//修改单个排行榜数据
+//飙升榜
+const changeUpRankingAction = (res) => ({
+    type: actionTypes.CHANGE_UP_RANKING,
+    upRanking: res.playlist,
+  });
+//新歌榜
+const changeNewRankingAction = (res) => ({
+    type: actionTypes.CHANGE_NEW_RANKING,
+    newRanking: res.playlist,
+});
+//原创榜
+const changeOriginRankingAction = (res) => ({
+    type: actionTypes.CHANGE_ORIGIN_RANKING,
+    originRanking: res.playlist,
+});

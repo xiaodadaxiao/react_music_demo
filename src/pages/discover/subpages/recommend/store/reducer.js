@@ -12,7 +12,13 @@ const defaultState = Map({
     //热门推荐数据
     hotRecommends: [],
     //新碟上架
-    newAlbums: []
+    newAlbums: [],
+    //飙升榜
+    upRanking: {},
+    //新歌榜
+    newRanking: {},
+    //原创榜
+    originRanking: {},
 })
 
 /*
@@ -37,6 +43,13 @@ export default function reducer(state = defaultState, action) {
         //修改 新碟上架数据
         case actionTypes.CHANGE_NEW_ALBUM:
             return state.set("newAlbums", action.newAlbums)
+        //修改三种榜单排行榜数据
+        case  actionTypes.CHANGE_UP_RANKING:
+            return state.set("upRanking", action.upRanking);
+        case  actionTypes.CHANGE_NEW_RANKING:
+            return state.set("newRanking", action.newRanking);
+        case  actionTypes.CHANGE_ORIGIN_RANKING:
+            return state.set("originRanking", action.originRanking);
         default:
             return state
     }

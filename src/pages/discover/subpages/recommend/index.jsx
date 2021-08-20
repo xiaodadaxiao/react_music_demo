@@ -7,6 +7,9 @@ import TopBanner from './c-cpns/top-banner';
 import HotRecommend from './c-cpns/hot-recommend';
 import NewRecommend from './c-cpns/new-album'
 import RecommendRaking from './c-cpns/recommend-raking';
+import UserLogin from './c-cpns/user-login';
+import SettleSingle from './c-cpns/settle-single';
+import HotAnchor from './c-cpns/hot-anchor';
 function Recommend() {
 
     return (
@@ -26,7 +29,12 @@ function Recommend() {
                 </RecommendLeft>
                 {/* 右边导航栏 */}
                 <RecommendRight>
-                    right
+                    {/* 用户登录 */}
+                    <UserLogin/>   
+                    {/* 歌手 */}
+                    <SettleSingle/>
+                    {/*热门主播 */}
+                    <HotAnchor/>
                 </RecommendRight>
             </Content>
 
