@@ -1,0 +1,1 @@
+export const CHANGE_CURRENT_SONG = "player_CHANGE_CURRENT_SONG";

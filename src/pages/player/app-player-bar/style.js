@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 import spriteIcon from '@assets/img/sprite_icon.png'
+import progressBar from '@assets/img/progress_bar.png'
 export const Wrapper = styled.div`
   position: fixed;
   left: 0;
@@ -24,6 +25,9 @@ export const Wrapper = styled.div`
 
 // 播放按钮
 export const Control = styled.div`
+  button{
+    cursor:pointer;
+  }
   .prev,
   .next {
     width: 28px;
@@ -85,11 +89,12 @@ export const PlayInfo = styled.div`
       .song-name {
         color: #e8e8e8;
         max-width: 300px;
+        margin-right: 15px;
       }
 
       .singer-name {
         max-width: 220px;
-        margin-left: 15px;
+        /* margin-left: 15px; */
         color: #9b9b9b;
       }
     }
@@ -103,7 +108,27 @@ export const PlayInfo = styled.div`
         margin: 0;
         margin-right: 5px;
       }
-
+      /* 修改antd 的slider 样式 */
+      .ant-slider{
+        width: 493px;
+        margin-right: 10px;
+        .ant-slider-rail{
+          height: 9px;
+          background: url(${progressBar})right 0;
+        }
+        .ant-slider-track{
+          height: 9px;
+          background: url(${progressBar})left -66px;
+        }
+        .ant-slider-handle{
+          width: 22px;
+          height: 24px;
+          border: none;
+          margin-top: -7px;
+          /* background: url("@assets/img/sprite_icon.png")0 -250px; */
+          background: url(${spriteIcon})0 -250px;
+        }
+      }
       .time {
         height: 16px;
         line-height: 16px;
@@ -200,40 +225,40 @@ export const Operator = styled.div`
     .icon-loop {
       /* background-position: -3px -344px; */
       background-position: ${(props) => {
-        switch (props.playMode) {
-          case 0:
-            // 循环播放
-            return "-3px -344px";
-          case 1:
-            // 随机播放
-            return "-66px -248px";
-          case 2:
-            // 单曲播放
-            return "-66px -344px";
-          default:
-            // 默认循环播放
-            return "-3px -344px";
-        }
-      }};
+    switch (props.playMode) {
+      case 0:
+        // 循环播放
+        return "-3px -344px";
+      case 1:
+        // 随机播放
+        return "-66px -248px";
+      case 2:
+        // 单曲播放
+        return "-66px -344px";
+      default:
+        // 默认循环播放
+        return "-3px -344px";
+    }
+  }};
 
       &:hover {
         /* background-position: -33px -344px; */
         background-position: ${(props) => {
-          switch (props.playMode) {
-            case 0:
-              // 循环播放
-              return "-33px -344px";
-            case 1:
-              // 随机播放
-              return "-93px -248px;";
-            case 2:
-              // 单曲播放
-              return "-93px -344px;";
-            default:
-              // 默认循环播放
-              return "-33px -344px";
-          }
-        }};
+    switch (props.playMode) {
+      case 0:
+        // 循环播放
+        return "-33px -344px";
+      case 1:
+        // 随机播放
+        return "-93px -248px;";
+      case 2:
+        // 单曲播放
+        return "-93px -344px;";
+      default:
+        // 默认循环播放
+        return "-33px -344px";
+    }
+  }};
       }
     }
 

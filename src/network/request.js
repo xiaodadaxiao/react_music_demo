@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const BASE_URL_1 = "http://123.207.32.32:9001";
-const BASE_URL_2 = "http://localhost:8080";
+//const BASE_URL_2 = "http://localhost:8080";
 const TIMEOUT = 5000;
 
 //默认axios实例对象

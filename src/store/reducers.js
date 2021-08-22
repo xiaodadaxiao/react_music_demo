@@ -4,6 +4,10 @@
 import { combineReducers } from 'redux-immutable'
 /* 导入reducer */
 import { reducer as recommendReducer } from '@pages/discover/subpages/recommend/store'
+import { reducer as playerReducer } from '@pages/player/store'
 
 //合并导出reduce
-export default combineReducers({ recommend: recommendReducer })
+export default combineReducers({
+    recommend: recommendReducer,
+    player: playerReducer
+})
