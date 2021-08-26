@@ -3,7 +3,7 @@ import React, { memo } from 'react'
 import { SongsCoverWrapper } from "./style";
 import { getCount, getSizeImage } from "@utils/format-utils";
 export default memo(function SongCover(props) {
-    const { info } = props
+    const { info, info: { copywriter = "" } } = props
     return (
         <SongsCoverWrapper>
             <div className="cover-top">
@@ -25,7 +25,7 @@ export default memo(function SongCover(props) {
                 </a>
             </div>
             <div className="cover-source  text-nowrap">
-                by {info.copywriter || info.creator.nickname}
+                by {copywriter || "推荐"}
             </div>
         </SongsCoverWrapper>
     )

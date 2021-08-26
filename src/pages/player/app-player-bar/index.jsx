@@ -1,21 +1,28 @@
 /* 底部菜单栏播放器 */
 import React, { memo, useState, useEffect, useRef, useCallback } from 'react'
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
-import { Slider } from 'antd';
+import { NavLink } from 'react-router-dom';
+import { Slider, message } from 'antd';
 import { Wrapper, Control, PlayInfo, Operator } from './style';
 
 import { getSizeImage, formatDate } from '@utils/format-utils';
 
-import { getSongDetailAction } from '../store/actionCreators';
+import {
+    getSongDetailAction, changeSequenceAction, changCurrentSongAction
+    , changeCurrentLyricIndexAction
+} from '../store/actionCreators';
 
 export default memo(function AppPlayerBar() {
 
     //redux hooks
     const dispatch = useDispatch();
 
-    const { currentSong } = useSelector((state) => {
+    const { currentSong, sequence, lyric, currentLyricIndex } = useSelector((state) => {
         return {
-            currentSong: state.getIn(["player", "currentSong"])
+            currentSong: state.getIn(["player", "currentSong"]),
+            sequence: state.getIn(["player", "sequence"]),
+            lyric: state.getIn(["player", "lyric"]),
+            currentLyricIndex: state.getIn(["player", "currentLyricIndex"]),
         }
     }, shallowEqual)
     //othors hooks
@@ -29,14 +36,22 @@ export default memo(function AppPlayerBar() {
     const [isPlaying, setIsPlaying] = useState(false);
     //是否正在手动改变进度
     const [isChanging, setIsChanging] = useState(false);
+    //音量
+    const [isShowVolume, setIsShowVolme] = useState(false);
     //请求歌曲信息
     useEffect(() => {
         dispatch(getSongDetailAction(1857630559));
-        console.log(currentSong);
     }, [dispatch])
     //改变歌曲播放器链接
     useEffect(() => {
         audioRef.current.src = `https://music.163.com/song/media/outer/url?id=${currentSong.id}.mp3`;
+        //return;
+        //播放
+        audioRef.current.play().then(res => {
+            setIsPlaying(true)
+        }).catch(err => {
+            setIsPlaying(false)//播放失败
+        })
     }, [currentSong])
 
     /* other data */
@@ -49,7 +64,7 @@ export default memo(function AppPlayerBar() {
 
     /* handele */
     //播放音乐
-    const playMusic = () => {
+    const playMusic = useCallback(() => {
         //未在播放
         if (!isPlaying) {
             //开始播放
@@ -60,15 +75,46 @@ export default memo(function AppPlayerBar() {
             audioRef.current.pause();
             setIsPlaying(false);
         }
+    }, [isPlaying])
+    //上一首 下一首
+    const changeMusic = (tag) => {
+        //-1上一首 1下一首
+        dispatch(changCurrentSongAction(tag))
     }
     //音乐播放时间变化
     const timeUpdate = (e) => {
+        let audioNowTime = e.target.currentTime;
         //正在手动滑动时，不改变进度
         //改变进度条 （0-100）
         if (!isChanging) {
-            setCurrentTime(e.target.currentTime * 1000);
+            setCurrentTime(audioNowTime * 1000);
             setProgress(currentTime / duration * 100);
         }
+
+        //获取当前时间的歌词
+        let lyricIndex = 0
+        for (; lyricIndex < lyric.length; lyricIndex++) {
+
+            if (audioNowTime * 1000 < lyric[lyricIndex].time) {//获取下标
+                break;
+            }
+        }
+        //-1，变成上一句的下标（因为是小于lyricIndex，还没到）
+        lyricIndex += -1;
+        //修改redux中的currentLyricindex(重复不修改)
+        if (lyricIndex !== currentLyricIndex) {
+            //console.log(lyricIndex, lyric[lyricIndex] && lyric[lyricIndex].content);
+            dispatch(changeCurrentLyricIndexAction(lyricIndex))
+            //展示歌词
+            const content = (lyric[lyricIndex] && lyric[lyricIndex].content) || ""
+            message.open({
+                key: "lyric",//key相同。不会重复弹多个窗口，只会替换文字
+                content,
+                duration: 0,//不会自动消失，
+                className: 'lyric-class'
+            })
+        }
+
     }
     //进度条被改变
     const sliderChange = useCallback((value) => {
@@ -92,22 +138,54 @@ export default memo(function AppPlayerBar() {
             playMusic()
         }
     }, [duration, isPlaying, playMusic])
+    //点击改变播放顺序模式
+    const changeSequence = () => {
+        //0-1-2-0 循环 随机 单曲
+        let currentSequence = sequence + 1;
+        if (currentSequence > 2) {
+            currentSequence = 0
+        }
+        dispatch(changeSequenceAction(currentSequence));
+    }
+    //播放结束
+    const handleMusicEnded = () => {
+        //播放结束
+        //单曲循环模式
+        console.log("end", sequence);
+        if (sequence === 2) {
+            audioRef.current.currentTime = 0;//设置为0，从头开始
+            audioRef.current.play();
+        } else {
+            //播放下一首
+            changeMusic(1);
+        }
+    }
+
+    //点击音量展示隐藏
+    const clickVolumeShow = () => {
+        setIsShowVolme(!isShowVolume)
+    }
+    //音量变化
+    const volumeChange = (value) => {
+        audioRef.current.volume = value / 100//(0-1)
+    }
+
 
     return (
 
         <Wrapper className="sprite_playerbar">
             <div className="content wrap-v2">
                 <Control isPlay={isPlaying}>
-                    <button className="sprite_playerbar prev"></button>
+                    <button className="sprite_playerbar prev" onClick={e => changeMusic(-1)}></button>
                     <button className="sprite_playerbar play" onClick={e => playMusic()}></button>
-                    <button className="sprite_playerbar next"></button>
+                    <button className="sprite_playerbar next" onClick={e => changeMusic(1)}></button>
                 </Control>
                 <PlayInfo>
                     {/* 歌曲图片 */}
                     <div className="image">
-                        <a href="/#">
+                        <NavLink to="/discover/player">
                             <img src={getSizeImage(picUrl, 35)} alt="" />
-                        </a>
+                        </NavLink>
                     </div>
                     {/* 歌曲信息 */}
                     <div className="info">
@@ -143,7 +221,7 @@ export default memo(function AppPlayerBar() {
 
 
                 {/* 功能按钮区域 */}
-                <Operator>
+                <Operator playMode={sequence} isShowVolume={isShowVolume}>
                     {/* 收藏、分享 按钮 */}
                     <div className="left">
                         {/* 收藏按钮 */}
@@ -156,27 +234,36 @@ export default memo(function AppPlayerBar() {
                         {/* 音量设置条 */}
                         <div className="volume sprite_playerbar">
                             <div className="slider">
-                                <Slider vertical defaultValue={100} tipFormatter={null} />
+                                <Slider
+                                    vertical defaultValue={100}
+                                    onChange={volumeChange}
+                                />
                             </div>
                         </div>
-                        {/* 音量 */}
+                        {/* 音量按钮 */}
                         <button
                             className="sprite_playerbar btn icon-volume"
-
+                            onClick={clickVolumeShow}
                         ></button>
                         {/* 循环 */}
                         <button
                             className="sprite_playerbar btn icon-loop"
-
+                            onClick={changeSequence}
                         ></button>
                         {/* 播放列表 */}
                         <button className="sprite_playerbar btn icon-playlist">
                         </button>
+                        {/* 歌词 */}
+                        {/* <a href="" className="sprite_playerbar btn ">词</a> */}
                     </div>
                 </Operator>
             </div>
             {/* 播放器 */}
-            <audio ref={audioRef} onTimeUpdate={timeUpdate} />
+            <audio ref={audioRef}
+                onTimeUpdate={timeUpdate}
+                //播放结束
+                onEnded={handleMusicEnded}
+            />
         </Wrapper>
     )
 })

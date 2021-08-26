@@ -176,3 +176,16 @@ button {
   width: 100%;
   text-align: center;
 }
+
+/* 
+ antd
+*/
+/* 歌词 */
+.lyric-class {
+  position: fixed;
+  bottom: 50px;
+  left: 50%;
+  opacity: 0.8;
+  color: #c20c0c;
+  transform: translateX(-50%);
+}

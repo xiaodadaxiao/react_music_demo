@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import React, { memo, Suspense } from 'react'
 import { HashRouter } from 'react-router-dom';
 import { renderRoutes } from 'react-router-config';
 //redux
@@ -17,10 +17,12 @@ export default memo(function App() {
     <Provider store={store}>
       < HashRouter >
         {/* hash router /# */}
-        <AppHeader ></AppHeader>
-        {/* 路由渲染 */}
-        {renderRoutes(routes)}
-        < AppFooter ></AppFooter>
+        <AppHeader />
+        <Suspense fallback={<h1>loading...</h1>}>
+          {/* 路由渲染 */}
+          {renderRoutes(routes)}
+        </Suspense>
+        < AppFooter />
         {/* 播放栏 */}
         <AppPlayerBar></AppPlayerBar>
       </HashRouter >

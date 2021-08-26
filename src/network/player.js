@@ -11,3 +11,13 @@ export function getSongDetail(ids) {
         }
     })
 }
+
+//请求歌词
+export function getLyric(id) {
+    return request({
+        url: '/lyric',
+        params: {
+            id
+        }
+    })
+}

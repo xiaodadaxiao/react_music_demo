@@ -1,2 +1,4 @@
 import reducer from "./reducer";
-export { reducer }
+//导出 添加歌曲的action
+import { getSongDetailAction } from './actionCreators'
+export { reducer, getSongDetailAction }

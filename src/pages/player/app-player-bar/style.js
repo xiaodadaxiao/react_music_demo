@@ -189,13 +189,14 @@ export const Operator = styled.div`
       height: 113px;
       top: -110px;
       background-position: 0 -503px;
-
+      display: ${(prpos) => prpos.isShowVolume ? "block" : "none"};
       .slider {
         position: relative;
         width: 4px;
         height: 93px;
         padding: 4px 0;
         top: 7px;
+        
 
         /* 进度条背景 */
         .ant-slider-track {
@@ -224,6 +225,7 @@ export const Operator = styled.div`
     /* 循环 */
     .icon-loop {
       /* background-position: -3px -344px; */
+      cursor: pointer;
       background-position: ${(props) => {
     switch (props.playMode) {
       case 0:
